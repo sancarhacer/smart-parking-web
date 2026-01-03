@@ -1,0 +1,61 @@
+<section class="top-bar">
+        <div class="container">
+          <div class="row gy-2 align-items-center">
+            <div class="col-lg-2 col-sm-4 col-4">
+              <a asp-controller="Home" asp-action="Index" class="navbar-brand">
+                <img
+                  src="~/img/logo.jpeg"
+                  alt="Smart Parking Logo"
+                  width="50"
+                  height="50"
+                  class="d-inline-block align-text"
+                />
+                Smart Parking
+              </a>
+            </div>
+            <div class="col-lg-5">
+              <form>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    placeholder="otopark arayın"
+                    class="form-control"
+                  />
+                  <button class="btn btn-primary">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <div class="col-lg-5 col-sm-8 col-8 ms-auto order-lg-last">
+              <div class="text-end">
+
+                @if(User.Identity?.IsAuthenticated == true){
+                  <a href="#" class="btn btn-light">
+                    <i class="fa fa-user"></i>
+                    <span class="ms-1 d-none d-sm-inline-block">Hesabım</span>
+                  </a>
+                  <a asp-controller="Favorites" asp-action="Index" class="btn btn-light">
+                    <i class="fa fa-heart"></i>
+                    <span class="ms-1 d-none d-sm-inline-block">Favorites </span>
+                  </a>
+                  <a asp-controller="Account" asp-action="LogOut" class="btn btn-light">
+                    <i class="fa fa-user"></i>
+                    <span class="ms-1 d-none d-sm-inline-block">Çıkış Yap</span>
+                  </a>
+                }
+                else{
+                  <a asp-controller="Account" asp-action="Login" class="btn btn-light">
+                    <i class="fa-solid fa-right-to-bracket"></i> <span class="ms-1 d-none d-sm-inline-block">Giriş</span>
+                  </a>
+                  <a asp-controller="Account" asp-action="Create" class="btn btn-light">
+                    <i class="fa-solid fa-user-plus"></i> <span class="ms-1 d-none d-sm-inline-block">Kayıt Ol</span>
+                  </a>
+                }
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>

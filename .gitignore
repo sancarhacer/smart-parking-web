@@ -1,0 +1,11 @@
+# ENV & Secrets
+.env
+firebase_admin_key.json
+
+# Python
+__pycache__/
+*.joblib
+
+# .NET
+bin/
+obj/

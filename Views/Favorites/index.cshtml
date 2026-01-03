@@ -1,0 +1,49 @@
+
+
+
+@model List<FavoriteViewModel>
+
+<h2 class="mb-4">⭐ Favorilerim</h2>
+
+<div class="container">
+    <div class="row">
+    @foreach (var fav in Model)
+    {
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                
+                @* <!-- HARİTA -->
+                <iframe
+                width="100%"
+                height="220"
+                style="border:0"
+                loading="lazy"
+                allowfullscreen
+                referrerpolicy="no-referrer-when-downgrade"
+                src="https://maps.google.com/maps?
+                    q=@fav.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                    @fav.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture)
+                    &z=18
+                    &output=embed"
+                    >
+            </iframe> *@
+
+
+                <div class="card-body">
+                    <h5 class="card-title">🅿️ @fav.ParkId</h5>
+
+                    <p class="card-text mb-1">
+                        Doluluk: <strong>@(fav.OccupancyRatio * 100)%</strong>
+                    </p>
+
+                    @if (!string.IsNullOrEmpty(fav.CustomName))
+                    {
+                        <p class="text-muted mb-0">⭐ @fav.CustomName</p>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    </div>
+</div>
+

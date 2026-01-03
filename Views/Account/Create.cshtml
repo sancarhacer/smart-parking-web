@@ -1,0 +1,66 @@
+<section class="mt-3">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header py-1">
+                        <h5 class="card-title">Kayıt Ol</h5>
+                    </div>
+                    <div class="card-body">
+                        <form onsubmit="register(); return false;">
+                            
+
+                            <div class="mb-3">
+                                <label for="email" class="col-sm-2 col-form-label">Eposta</label>
+                                <input type="email" id="email" class="form-control" required />
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="col-sm-2 col-form-label">Parola</label>
+                                <input type="password" id="password" class="form-control" required />
+                            </div>
+                        
+
+                            <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script type="module">
+    import { initializeApp } from
+      "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword
+    } from
+      "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+    
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.register = async function () {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        const result =
+            await createUserWithEmailAndPassword(auth, email, password);
+
+        // 🔥 TOKEN AL
+        const token = await result.user.getIdToken();
+
+        // 🔥 TOKEN’I MVC'YE GÖNDER
+        await fetch("/Account/FirebaseLogin", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token })
+        });
+
+        window.location.href = "/Home/Index";
+    }
+</script>
