@@ -51,6 +51,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 
 
+builder.Services.AddScoped<FirebaseService>();
+builder.Services.AddScoped<PredictionService>();
 
 builder.Services.AddHttpClient();
 
@@ -59,7 +61,7 @@ builder.Services.AddSingleton(provider =>
     string path = Path.Combine(Directory.GetCurrentDirectory(), "firebase_admin_key.json");
     Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", path);
 
-    return FirestoreDb.Create("");
+    return FirestoreDb.Create("project-adı");
 });
 
 // 🔥 Firebase Admin INIT

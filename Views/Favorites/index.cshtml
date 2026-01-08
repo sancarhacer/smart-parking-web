@@ -3,47 +3,165 @@
 
 @model List<FavoriteViewModel>
 
-<h2 class="mb-4">⭐ Favorilerim</h2>
 
-<div class="container">
-    <div class="row">
-    @foreach (var fav in Model)
-    {
-        <div class="col-md-4 mb-3">
-            <div class="card shadow-sm">
-                
-                @* <!-- HARİTA -->
-                <iframe
-                width="100%"
-                height="220"
-                style="border:0"
-                loading="lazy"
-                allowfullscreen
-                referrerpolicy="no-referrer-when-downgrade"
-                src="https://maps.google.com/maps?
-                    q=@fav.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                    @fav.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture)
-                    &z=18
-                    &output=embed"
-                    >
-            </iframe> *@
+<section>
 
-
+    <div class="container">
+        <h2 class="mb-4 text-primary text-center"> Favorilerim</h2>
+        @foreach (var fav in Model)
+        {
+            <div class="card mb-3 shadow-sm w-100">
                 <div class="card-body">
-                    <h5 class="card-title">🅿️ @fav.ParkId</h5>
+                    <div class="row align-items-center">
 
-                    <p class="card-text mb-1">
-                        Doluluk: <strong>@(fav.OccupancyRatio * 100)%</strong>
-                    </p>
+                        <!-- SOL: EDIT BUTTON -->
+                        
 
-                    @if (!string.IsNullOrEmpty(fav.CustomName))
-                    {
-                        <p class="text-muted mb-0">⭐ @fav.CustomName</p>
-                    }
+                        <!-- ORTA: CONTENT -->
+                        <div class="col-4">
+                            <h5 class="mb-2">
+                                <i class="bi bi-p-circle-fill text-primary"></i> @fav.CustomName
+                            </h5>
+                            
+                        </div>
+                        <div class=" col-4" >
+                            <p class=" mb-2 text-muted">
+                                Doluluk:
+                                <strong>%@((fav.CurrentOccupancyRatio * 100).ToString("0"))</strong>
+                            </p>
+                        </div>
+                        <div class="col-4 ms-auto">
+                            <button class="btn btn-light"
+                                    onclick="openEditModal('@fav.ParkId', '@fav.CustomName')">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <!-- DELETE -->
+                            <button class="btn btn-light text-danger"
+                                    onclick="openDeleteModal('@fav.ParkId', '@fav.CustomName')">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
                 </div>
             </div>
+
+        }
+    </div>
+
+    <div class="modal fade" id="editModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Favori İsmini Düzenle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" id="editParkId" />
+                    <div class="mb-3">
+                        <label class="form-label">Yeni İsim</label>
+                        <input type="text" id="editCustomName" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                    <button class="btn btn-primary" onclick="saveCustomName()">Kaydet</button>
+                </div>
+
+            </div>
         </div>
-    }
+    </div>
+
+    <div class="modal fade" id="deleteFavoriteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title text-danger">Favorilerden Sil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <p>
+                    <strong id="deleteFavName"></strong>
+                    adlı otopark favorilerden silinsin mi?
+                </p>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                <button class="btn btn-danger" onclick="confirmDeleteFavorite()">Sil</button>
+            </div>
+
+        </div>
     </div>
 </div>
+
+
+</section>
+<script>
+    let editModal;
+
+    document.addEventListener("DOMContentLoaded", () => {
+        editModal = new bootstrap.Modal(document.getElementById("editModal"));
+    });
+
+    function openEditModal(parkId, currentName) {
+        document.getElementById("editParkId").value = parkId;
+        document.getElementById("editCustomName").value = currentName;
+        editModal.show();
+    }
+
+    async function saveCustomName() {
+        const parkId = document.getElementById("editParkId").value;
+        const name = document.getElementById("editCustomName").value;
+
+        const res = await fetch("/Favorites/EditName", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                parkId: parkId,
+                customName: name
+            })
+        });
+
+        if (res.ok) {
+            location.reload(); // sade & güvenli
+        } else {
+            alert("İsim güncellenemedi");
+        }
+    }
+</script>
+<script>
+    let deleteParkId = "";
+
+    function openDeleteModal(parkId, name) {
+        deleteParkId = parkId;
+        document.getElementById("deleteFavName").innerText = name;
+
+        const modal = new bootstrap.Modal(
+            document.getElementById("deleteFavoriteModal")
+        );
+        modal.show();
+    }
+
+    async function confirmDeleteFavorite() {
+        await fetch('/Favorites/Delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ parkId: deleteParkId })
+        });
+
+        location.reload(); // silindikten sonra yenile
+    }
+</script>
+
+
+
 

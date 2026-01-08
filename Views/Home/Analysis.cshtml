@@ -1,0 +1,119 @@
+@model ParkingAnalysis
+@{
+    ViewData["Title"] = "Yoğunluk Analizi";
+}
+
+<div class="container py-4" style="max-width:900px">
+
+    <h4 class="fw-bold text-primary mb-4">Yoğunluk Analizi</h4>
+
+    <!-- OTOPARK SEÇ -->
+    <form method="get" class="card shadow-sm mb-4">
+        <div class="card-body">
+            <label class="form-label">Otopark Seçiniz</label>
+            <select name="parkId" class="form-select" onchange="this.form.submit()">
+                <option value="">Otopark seçiniz...</option>
+                @foreach (var park in Model.Parkings)
+                {
+                    <option value="@park.ParkId"
+                            selected="@(park.ParkId == Model.SelectedParkId)">
+                        @park.ParkId
+                    </option>
+                }
+            </select>
+        </div>
+    </form>
+
+    <!-- GRAFİK -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            @if (Model.GraphData.Any())
+            {
+                <canvas id="chart" height="120"></canvas>
+            }
+            else
+            {
+                <div class="text-center text-muted">
+                    Grafik için otopark seçiniz
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- KPI -->
+    @if (Model.GraphData.Any())
+    {
+        
+            var peak = Model.GraphData.OrderByDescending(x => x.Ratio).First();
+            var empty = Model.GraphData.OrderBy(x => x.Ratio).First();
+            var avg = Model.GraphData.Average(x => x.Ratio) * 100;
+        
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="kpi-card">
+                    <i class="bi bi-graph-up text-danger"></i>
+                    <small>En Yoğun</small>
+                    <strong>@peak.Time</strong>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="kpi-card">
+                    <i class="bi bi-graph-down text-success"></i>
+                    <small>En Uygun</small>
+                    <strong>@empty.Time</strong>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="kpi-card">
+                    <i class="bi bi-bar-chart text-primary"></i>
+                    <small>Ortalama</small>
+                    <strong>%@avg.ToString("0")</strong>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="text-center text-muted small">
+        <i class="bi bi-info-circle"></i>
+        Yapay zeka modeline göre önümüzdeki 24 saatlik tahmin
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    @if (Model.GraphData.Any())
+    {
+        <script>
+            const labels = @Html.Raw(Json.Serialize(Model.GraphData.Select(x => x.Time)));
+            const values = @Html.Raw(Json.Serialize(Model.GraphData.Select(x => x.Ratio * 100)));
+
+            new Chart(document.getElementById("chart"), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        borderColor: '#0d47a1',
+                        backgroundColor: 'rgba(13,71,161,0.25)',
+                        fill: true,
+                        tension: 0.35
+                    }]
+                },
+                options: {
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: 100,
+                            ticks: { callback: v => `%${v}` }
+                        }
+                    }
+                }
+            });
+        </script>
+    }
+}

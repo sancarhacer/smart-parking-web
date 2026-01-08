@@ -1,5 +1,7 @@
 :root {
-  --primary: #6610f2;
+  --primary: #0d47a1;
+  --bs-primary: #0d47a1;
+  /* --bs-primary-rgb: 13, 71, 161; */
 }
 
 .top-bar {
@@ -10,7 +12,7 @@
 .btn-light {
   background-color: #fff;
   border-color: #dee2e6;
-  color: #212529;
+  color: #0d47a1;
 }
 
 .bg-primary,
@@ -20,6 +22,9 @@
 
 .navbar-brand {
   color: var(--primary);
+}
+.navbar {
+  background-color: #0d47a1 !important;
 }
 
 .btn-light i {
@@ -163,4 +168,71 @@
 
 .checked {
   color: orange;
+}
+
+.about-page {
+  max-width: 800px;
+}
+
+.about-icon {
+  font-size: 80px;
+  color: #0d47a1;
+}
+
+.feature-item {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.feature-icon {
+  font-size: 30px;
+  color: #0d47a1;
+  margin-top: 5px;
+}
+
+.feature-item h5 {
+  font-weight: bold;
+}
+
+.feature-item p {
+  color: #6c757d;
+  margin-bottom: 0;
+}
+
+.info-box {
+  background-color: #e3f2fd;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  font-style: italic;
+  color: #607d8b;
+}
+
+.analysis-page {
+  max-width: 900px;
+}
+
+.kpi-card {
+  background: #fff;
+  padding: 16px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.05);
+}
+
+.kpi-card i {
+  font-size: 22px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.kpi-card small {
+  color: #6c757d;
+  font-size: 12px;
+}
+
+.kpi-card strong {
+  font-size: 16px;
+  color: #263238;
 }

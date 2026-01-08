@@ -1,7 +1,7 @@
 <section class="top-bar">
         <div class="container">
           <div class="row gy-2 align-items-center">
-            <div class="col-lg-2 col-sm-4 col-4">
+            <div class="col-lg-5 col-sm-4 col-4">
               <a asp-controller="Home" asp-action="Index" class="navbar-brand">
                 <img
                   src="~/img/logo.jpeg"
@@ -10,10 +10,10 @@
                   height="50"
                   class="d-inline-block align-text"
                 />
-                Smart Parking
+                Akıllı Otopark
               </a>
             </div>
-            <div class="col-lg-5">
+            @* <div class="col-lg-5">
               <form>
                 <div class="input-group">
                   <input
@@ -26,9 +26,9 @@
                   </button>
                 </div>
               </form>
-            </div>
+            </div> *@
 
-            <div class="col-lg-5 col-sm-8 col-8 ms-auto order-lg-last">
+            <div class="col-lg-7 col-sm-8 col-8 ms-auto order-lg-last">
               <div class="text-end">
 
                 @if(User.Identity?.IsAuthenticated == true){

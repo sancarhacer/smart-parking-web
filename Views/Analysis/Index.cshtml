@@ -1,0 +1,56 @@
+@{
+    var parkings = ViewBag.Parkings as List<string>;
+}
+<section class="mt-3">
+    <div class="container">
+        <h2 class="mb-4 text-primary text-center">Yoğunluk Analizi</h2>
+
+        <select id="parkingSelect" class="form-select mb-3 text-center" style="max-width: 300px;">
+            @foreach (var p in parkings)
+            {
+                <option value="@p">Otopark: @p</option>
+            }
+        </select>
+
+        <canvas id="chart" height="120" class="mb-4"></canvas>
+
+        <!-- KARTLAR -->
+        <div class="row row-cols-1 row-cols-md-3 g-4 mb-3">
+            <div class="col">
+                <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                        <div class="fw-bold"> <i class="fa-solid fa-arrow-trend-up text-red"></i>En Yoğun</div>
+                        <span id="peak"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                        <div class="fw-bold"><i class="fa-solid fa-arrow-trend-down text-green"></i> En Uygun</div>
+                        <span id="empty"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                        <div class="fw-bold"><i class="fa-solid fa-chart-column text-primary"></i> Ortalama</div>
+                        <span id="avg"></span>%
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="info text-center">
+            Yapay zeka modeline göre önümüzdeki 24 saatlik tahmin.
+        </p>
+    </div>
+</section>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="~/js/analysis.js"></script>

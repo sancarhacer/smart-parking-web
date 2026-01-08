@@ -1,9 +1,8 @@
 namespace smart_parking_web.Models;
-public class FavoriteAddDto
+public class RecommendAnalysis
 {
     public string ParkId { get; set; }
     public double Latitude { get; set; }
     public double Longitude { get; set; }
-    public double OccupancyRatio { get; set; }
-    public string? CustomName { get; set; }
 }
+

@@ -49,7 +49,7 @@ public class AccountController : Controller
     {
         var uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        FirestoreDb db = FirestoreDb.Create("");
+        FirestoreDb db = FirestoreDb.Create("project-adi");
        
 
         await db.Collection("users").Document(uid).SetAsync(new
